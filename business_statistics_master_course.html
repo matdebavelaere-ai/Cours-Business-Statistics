@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Statistics & Data Analytics — Cours Master</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --cream: #ede8da;
+    --accent: #c0392b;
+    --accent2: #1a3a5c;
+    --accent3: #d4a017;
+    --muted: #6b6457;
+    --grid: #ddd5c5;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Playfair Display', serif;
+    --sans: 'DM Sans', sans-serif;
+    --col: 720px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    counter-reset: section;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  nav {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: var(--accent2);
+    color: #e0e8f0;
+    padding: 2rem 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  nav .nav-logo {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #8aafc7;
+    padding: 0 1.4rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  nav a {
+    display: block;
+    padding: 0.45rem 1.4rem;
+    color: #b0c8df;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s, background 0.2s;
+    border-left: 3px solid transparent;
+  }
+  nav a:hover { color: #fff; background: rgba(255,255,255,0.06); border-left-color: var(--accent3); }
+  nav a.section-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-top: 1.2rem;
+    pointer-events: none;
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    margin-left: 220px;
+    padding: 0 0 6rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--accent2);
+    color: #f0f4f8;
+    padding: 5rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    border: 80px solid rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 60px; bottom: -120px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 50px solid rgba(255,255,255,0.03);
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .hero-tag::before { content: '//'; opacity: 0.5; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { color: var(--accent3); font-style: normal; }
+  .hero p {
+    max-width: 560px;
+    color: #93afc5;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #6a8fa8;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .hero-meta span::before { content: '▸'; color: var(--accent3); }
+
+  /* ── CONTENT LAYOUT ── */
+  .content-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  /* ── SECTIONS ── */
+  .module {
+    padding: 4rem 0 2rem;
+    border-bottom: 1px solid var(--grid);
+  }
+  .module-number {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .module-number::before { content: '§'; }
+  .module h2 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .module .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.8rem;
+    color: var(--accent2);
+  }
+  h4 {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2rem 0 0.6rem;
+  }
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 600; }
+
+  /* ── DEFINITION BOX ── */
+  .def {
+    background: white;
+    border-left: 4px solid var(--accent2);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    box-shadow: 2px 2px 0 var(--grid);
+  }
+  .def-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.4rem;
+  }
+  .def p { margin-bottom: 0; }
+
+  /* ── THEOREM / FORMULA BOX ── */
+  .formula {
+    background: var(--accent2);
+    color: #d0e4f4;
+    padding: 1.2rem 1.6rem;
+    margin: 1.5rem 0;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  .formula .formula-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 0.4rem;
+  }
+
+  /* ── KEY STAT CALLOUT ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--grid);
+    border-top: 3px solid var(--accent);
+    padding: 1.2rem 1rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .stat-card .big {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-card .label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .stat-card .source {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--grid);
+    margin-top: 0.3rem;
+  }
+
+  /* ── CHART WRAPPER ── */
+  .chart-wrap {
+    background: white;
+    border: 1px solid var(--grid);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .chart-wrap .chart-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .chart-wrap .chart-src {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .chart-wrap canvas { max-height: 320px; }
+
+  /* ── CITATION ── */
+  .cite {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    background: rgba(26,58,92,0.07);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    cursor: default;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  thead th {
+    background: var(--accent2);
+    color: #d0e4f4;
+    padding: 0.7rem 0.9rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  tbody td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--grid);
+  }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.6); }
+  tbody tr:nth-child(odd) { background: var(--cream); }
+  tbody td:first-child { font-weight: 600; color: var(--accent2); }
+
+  /* ── NOTE / INSIGHT ── */
+  .insight {
+    border: 1px solid var(--accent3);
+    border-radius: 6px;
+    padding: 1rem 1.4rem;
+    margin: 1.5rem 0;
+    background: rgba(212,160,23,0.06);
+    display: flex; gap: 0.8rem; align-items: flex-start;
+  }
+  .insight::before {
+    content: '💡';
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .insight p { margin-bottom: 0; font-size: 0.9rem; }
+
+  /* ── REFERENCES SECTION ── */
+  .references {
+    background: var(--cream);
+    padding: 3rem;
+    margin-top: 4rem;
+  }
+  .references h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    color: var(--accent2);
+  }
+  .references ol {
+    padding-left: 1.4rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .references ol li { margin-bottom: 0.3rem; }
+  .references ol li strong { color: var(--ink); }
+
+  /* ── TOC ── */
+  .toc {
+    background: white;
+    border: 1px solid var(--grid);
+    padding: 1.5rem 1.8rem;
+    margin: 3rem 0;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 2rem;
+  }
+  .toc h3 { margin: 0 0 1rem; grid-column: 1/-1; font-size: 1rem; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; }
+  .toc a { font-size: 0.8rem; color: var(--accent2); text-decoration: none; display: flex; gap: 0.5rem; align-items: baseline; }
+  .toc a:hover { color: var(--accent); }
+  .toc a span { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    transform-origin: left;
+    z-index: 200;
+    transform: scaleX(0);
+    transition: transform 0.1s linear;
+  }
+
+  /* ── ANNOTATION / MARGIN NOTE STYLE ── */
+  .marginnote {
+    float: right;
+    clear: right;
+    width: 180px;
+    margin: 0 -220px 1rem 1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+    border-left: 2px solid var(--grid);
+    padding-left: 0.8rem;
+  }
+
+  @media (max-width: 1100px) {
+    .marginnote { display: none; }
+  }
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { margin-left: 0; }
+    .hero { padding: 3rem 1.5rem 2.5rem; }
+    .content-wrapper { padding: 0 1.5rem; }
+    .toc { grid-template-columns: 1fr; }
+  }
+
+  /* ── FORMULA DISPLAY ── */
+  .math-block {
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: rgba(26,58,92,0.04);
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  /* Pill badges */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 3px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+  .badge-red { background: rgba(192,57,43,0.12); color: var(--accent); }
+  .badge-blue { background: rgba(26,58,92,0.12); color: var(--accent2); }
+  .badge-gold { background: rgba(212,160,23,0.15); color: #7a5c00; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ── SIDEBAR ── -->
+<nav>
+  <div class="nav-logo">Business Statistics<br>& Data Analytics<br>— Master Level —</div>
+  <a class="section-title">Introduction</a>
+  <a href="#intro">Pourquoi la statistique ?</a>
+  <a href="#fondamentaux">Rappels fondamentaux</a>
+  <a class="section-title">Statistiques descriptives</a>
+  <a href="#tendance">Tendance centrale</a>
+  <a href="#dispersion">Dispersion & forme</a>
+  <a href="#correlation">Corrélation</a>
+  <a class="section-title">Inférence</a>
+  <a href="#estimation">Estimation</a>
+  <a href="#tests">Tests d'hypothèses</a>
+  <a href="#regression">Régression linéaire</a>
+  <a class="section-title">Data-Driven Business</a>
+  <a href="#kpis">KPIs & métriques</a>
+  <a href="#abtest">A/B Testing</a>
+  <a href="#forecasting">Forecasting</a>
+  <a class="section-title">Taille d'entreprise</a>
+  <a href="#taille">Performance & taille</a>
+  <a href="#maturite">Maturité data</a>
+  <a href="#references">Références</a>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Cours Master — Management & Data</div>
+  <h1>Business Statistics<br>& <em>Data Analytics</em></h1>
+  <p>Des fondements probabilistes aux leviers décisionnels : comment la statistique devient un avantage compétitif mesurable pour l'entreprise.</p>
+  <div class="hero-meta">
+    <span>Niveau M1/M2 — MiM</span>
+    <span>Background ingénieur ESTP</span>
+    <span>Références académiques & empiriques</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrapper">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Sommaire</h3>
+    <a href="#intro"><span>01</span> Introduction — Pourquoi les chiffres pilotent</a>
+    <a href="#fondamentaux"><span>02</span> Fondamentaux statistiques</a>
+    <a href="#tendance"><span>03</span> Statistiques descriptives</a>
+    <a href="#tests"><span>04</span> Inférence & Tests</a>
+    <a href="#regression"><span>05</span> Régression & modélisation</a>
+    <a href="#kpis"><span>06</span> KPIs & pilotage business</a>
+    <a href="#abtest"><span>07</span> A/B Testing — Expérimentation</a>
+    <a href="#forecasting"><span>08</span> Forecasting & prévision</a>
+    <a href="#taille"><span>09</span> Performance selon la taille</a>
+    <a href="#maturite"><span>10</span> Maturité data des organisations</a>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 1 — INTRODUCTION -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="intro">
+    <div class="module-number">Module 01</div>
+    <h2>Pourquoi la statistique pilote le business</h2>
+    <p class="subtitle">De l'intuition managériale à la décision fondée sur les preuves</p>
+
+    <p>Pendant des décennies, les décisions managériales reposaient majoritairement sur l'expérience et l'intuition. L'avènement de la donnée massifiée (Big Data), conjugué à la baisse des coûts de calcul, a fondamentalement transformé ce paradigme. Aujourd'hui, <strong>les entreprises les plus performantes sont statistiquement celles qui utilisent le plus intensivement la donnée</strong> dans leurs processus décisionnels.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="big">23×</div>
+        <div class="label">Plus susceptibles de surpasser leurs concurrents en acquisition client</div>
+        <div class="source">McKinsey, 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">6×</div>
+        <div class="label">Plus susceptibles de fidéliser leurs clients</div>
+        <div class="source">McKinsey Global Institute</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">19×</div>
+        <div class="label">Plus profitables — entreprises data-driven vs pairs</div>
+        <div class="source">Forbes / NewVantage, 2022</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">2,6T$</div>
+        <div class="label">Perte économique annuelle liée à la mauvaise qualité des données (US)</div>
+        <div class="source">IBM, 2022</div>
+      </div>
+    </div>
+
+    <p>Ces chiffres ne sont pas de simples curiosités : ils traduisent un écart de compétitivité structurel qui se creuse exponentiellement avec le temps. Comme l'illustre le <span class="cite">[McKinsey Global Institute, 2022]</span>, les entreprises du premier quintile en maturité analytique affichent un EBITDA supérieur de <strong>5 à 8 points de pourcentage</strong> par rapport à la médiane sectorielle.</p>
+
+    <div class="insight">
+      <p><strong>Analogie ingénieur :</strong> De même qu'un bureau d'études ne dimensionne pas une poutre à l'œil — il applique la résistance des matériaux — un manager ne doit pas allouer un budget marketing sans modèle statistique de retour sur investissement. La rigueur quantitative est le même geste intellectuel.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Corrélation entre maturité analytique et performance financière (EBITDA Δ vs médiane sectorielle)</div>
+      <div class="chart-src">Source : McKinsey Global Institute, "The Data-Driven Enterprise of 2025", 2022 — données sectorielles agrégées</div>
+      <canvas id="chartMaturity"></canvas>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 2 — FONDAMENTAUX -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="fondamentaux">
+    <div class="module-number">Module 02</div>
+    <h2>Rappels et fondements statistiques</h2>
+    <p class="subtitle">Ce qu'il faut maîtriser avant de toucher à la data business</p>
+
+    <p>Avant d'instrumentaliser les statistiques, il est nécessaire de poser un vocabulaire précis. Les notions qui suivent s'appuient sur votre formation mathématique de prépa (probabilités, intégration) et seront directement réinvesties dans les modules applicatifs.</p>
+
+    <div class="def">
+      <div class="def-label">Définition — Population & Échantillon</div>
+      <p>La <strong>population</strong> \( \Omega \) est l'ensemble exhaustif des individus concernés par l'étude. L'<strong>échantillon</strong> \( S \subset \Omega \) de taille \( n \) est un sous-ensemble observé. En entreprise, la population est souvent inaccessible (ex : tous les clients potentiels mondiaux d'une marque) ; l'inférence statistique permet de généraliser des résultats d'échantillon à la population.</p>
+    </div>
+
+    <div class="def">
+      <div class="def-label">Définition — Variable aléatoire</div>
+      <p>Une <strong>variable aléatoire</strong> \( X : \Omega \to \mathbb{R} \) est une fonction mesurable associant à chaque issue un nombre réel. En contexte business : le panier moyen, le NPS, le churn rate, le temps de traitement d'une commande sont des variables aléatoires observées sur un échantillon de clients ou transactions.</p>
+    </div>
+
+    <h3>Types de variables en entreprise</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Description</th><th>Exemple business</th><th>Outils adaptés</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nominale</td><td>Catégories sans ordre</td><td>Secteur d'activité, canal de vente</td><td>Mode, Chi², Tableau croisé</td></tr>
+          <tr><td>Ordinale</td><td>Catégories ordonnées</td><td>NPS (0–10), satisfaction (1–5)</td><td>Médiane, Spearman, Mann-Whitney</td></tr>
+          <tr><td>Continue</td><td>Valeurs réelles</td><td>CA, marge brute, coût unitaire</td><td>Moyenne, variance, régression</td></tr>
+          <tr><td>Discrète</td><td>Entiers dénombrables</td><td>Nombre de commandes, leads</td><td>Poisson, binomiale, comptage</td></tr>
+          <tr><td>Temporelle</td><td>Indexée sur le temps</td><td>CA mensuel, taux de conversion</td><td>Séries temporelles, ARIMA, STL</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 3 — STATISTIQUES DESCRIPTIVES -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="tendance">
+    <div class="module-number">Module 03</div>
+    <h2>Statistiques descriptives</h2>
+    <p class="subtitle">Résumer, comprendre, comparer — la base de tout diagnostic business</p>
+
+    <h3 id="tendance">3.1 Tendance centrale</h3>
+
+    <div class="formula">
+      <div class="formula-label">Formules fondamentales</div>
+      Moyenne arithmétique : x̄ = (1/n) Σᵢ xᵢ<br>
+      Médiane : valeur M telle que P(X ≤ M) = 0.5<br>
+      Mode : valeur la plus fréquente dans la distribution<br>
+      Moyenne géométrique : G = (∏ᵢ xᵢ)^(1/n)  ← pertinente pour les taux de croissance
+    </div>
+
+    <div class="insight">
+      <p><strong>Attention au piège managérial.</strong> Jeff Bezos l'a expliqué dans sa lettre aux actionnaires 2017 : Amazon mesure la <em>latence de livraison</em> au 99e percentile, non à la moyenne. Pourquoi ? Car la moyenne peut masquer une queue de distribution catastrophique — les 1% de clients avec une expérience désastreuse. En mécanique, c'est l'équivalent de dimensionner une pièce à la charge moyenne en ignorant les pics de charge.</p>
+    </div>
+
+    <p><strong>La moyenne géométrique</strong> est préférable à la moyenne arithmétique pour agréger des taux de croissance ou de rendement. Si une action gagne +50% en année 1 et perd -50% en année 2, la moyenne arithmétique donne 0% alors que la valeur réelle de l'investissement a chuté de <strong>25%</strong>. C'est le <em>volatility drag</em>, bien connu en finance quantitative <span class="cite">[Luenberger, 1998]</span>.</p>
+
+    <h3 id="dispersion">3.2 Dispersion et forme de la distribution</h3>
+
+    <div class="formula">
+      <div class="formula-label">Paramètres de dispersion</div>
+      Variance : s² = (1/n-1) Σᵢ (xᵢ - x̄)²   ← estimateur sans biais de σ²<br>
+      Écart-type : s = √s²<br>
+      Coefficient de variation : CV = s / |x̄|  (sans unité — comparaison inter-séries)<br>
+      IQR (interquartile range) : Q₃ - Q₁  ← robuste aux outliers<br>
+      Asymétrie (skewness) : γ₁ = (1/n) Σ [(xᵢ - x̄)/s]³<br>
+      Aplatissement (kurtosis) : γ₂ = (1/n) Σ [(xᵢ - x̄)/s]⁴ - 3
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Distribution des marges brutes dans un panel de 500 entreprises européennes du secteur retail</div>
+      <div class="chart-src">Source : Données Eurostat/BvD Orbis, simulation pédagogique basée sur les statistiques sectorielles OCDE 2022</div>
+      <canvas id="chartDistrib"></canvas>
+    </div>
+
+    <p>La connaissance du <strong>skewness</strong> change radicalement les décisions. Si la distribution des délais de livraison d'un fournisseur est asymétrique à droite (longue queue vers les grands délais), la médiane et l'IQR sont des indicateurs bien plus pertinents que la moyenne pour les SLA contractuels.</p>
+
+    <h3 id="correlation">3.3 Corrélation et covariance</h3>
+
+    <div class="def">
+      <div class="def-label">Définition — Coefficient de corrélation de Pearson</div>
+      <p>
+        \[ r = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(n-1)\, s_x \, s_y} \in [-1, 1] \]
+      </p>
+      <p>Le coefficient de Pearson mesure la <strong>linéarité</strong> de la relation entre deux variables continues. Pour des variables ordinales ou non-linéaires, on privilégiera le <strong>coefficient de Spearman</strong> \( \rho \), basé sur les rangs.</p>
+    </div>
+
+    <div class="insight">
+      <p><strong>Corrélation ≠ Causalité.</strong> C'est le principe le plus cité et le plus violé en business analytics. Le chiffre d'affaires d'une entreprise de glaces est corrélé à la mortalité par noyade (r ≈ 0.95) — la chaleur est la variable confondante. En pilotage commercial, une corrélation élevée entre NPS et croissance du CA est un signal intéressant, pas une preuve causale. La causalité nécessite soit une randomisation (A/B test), soit des méthodes économétriques dédiées (IV, DiD, RDD) <span class="cite">[Pearl & Mackenzie, 2018]</span>.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Nuage de points : Score NPS vs taux de croissance annuel du CA — 80 entreprises SaaS B2B (2021–2023)</div>
+      <div class="chart-src">Source : Bain & Company, "The Economics of Customer Loyalty", 2023 — reconstitution pédagogique</div>
+      <canvas id="chartScatter"></canvas>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 4 — INFÉRENCE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="estimation">
+    <div class="module-number">Module 04</div>
+    <h2>Inférence statistique</h2>
+    <p class="subtitle">Généraliser avec rigueur — de l'échantillon à la population</p>
+
+    <h3>4.1 Estimation ponctuelle et par intervalle</h3>
+
+    <p>L'inférence statistique est le cœur de la démarche scientifique appliquée au business : on observe un échantillon, on en déduit des propriétés de la population. Deux outils fondamentaux :</p>
+
+    <div class="def">
+      <div class="def-label">Théorème Central Limite (TCL)</div>
+      <p>Pour \( n \) suffisamment grand (en pratique \( n \geq 30 \)), la distribution de la moyenne empirique \( \bar{X}_n \) converge vers une loi normale :</p>
+      <p>\[ \sqrt{n}\,\frac{\bar{X}_n - \mu}{\sigma} \xrightarrow{\mathcal{L}} \mathcal{N}(0,1) \]</p>
+      <p>C'est le fondement de toute construction d'intervalle de confiance et de tout test asymptotique en statistique business.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Intervalle de confiance à 95% — cas σ inconnu</div>
+      IC₀.₉₅(μ) = [ x̄ - t_{n-1, 0.025} × s/√n  ;  x̄ + t_{n-1, 0.025} × s/√n ]<br><br>
+      Pour n ≥ 30 → t_{n-1, 0.025} ≈ 1.96  (approximation normale)<br>
+      Pour n = 10 → t_{9, 0.025} = 2.262  (table de Student)
+    </div>
+
+    <div class="insight">
+      <p><strong>Application directe :</strong> Vous mesurez le panier moyen d'un segment client sur 150 transactions : \( \bar{x} = 87 \)€, \( s = 32 \)€. L'IC à 95% est \( [81.9\text{€} ; 92.1\text{€}] \). Vous pouvez communiquer à votre direction que le panier moyen est <em>avec 95% de confiance</em> dans cet intervalle. La largeur de cet intervalle (≈ 10€) est le prix statistique de votre incertitude sur un échantillon de 150 clients.</p>
+    </div>
+
+    <h3 id="tests">4.2 Tests d'hypothèses</h3>
+
+    <p>Le test d'hypothèses est la méthode formelle pour prendre une décision binaire face à l'incertitude. Sa structure est rigoureusement fixée :</p>
+
+    <div class="def">
+      <div class="def-label">Structure canonique d'un test statistique</div>
+      <p><strong>H₀</strong> : Hypothèse nulle (le statu quo — celle qu'on cherche à rejeter)<br>
+      <strong>H₁</strong> : Hypothèse alternative (la thèse à valider)<br>
+      <strong>Statistique de test</strong> \( T \) : fonction des données dont la loi sous H₀ est connue<br>
+      <strong>p-value</strong> \( p = P(|T| \geq |t_{obs}| \mid H_0) \)<br>
+      <strong>Règle de décision</strong> : rejeter H₀ si \( p &lt; \alpha \) (niveau de signification, souvent 5%)</p>
+    </div>
+
+    <p>Attention à la <strong>p-value</strong> : elle n'est pas la probabilité que H₀ soit vraie. C'est la probabilité d'observer des données au moins aussi extrêmes que celles observées, <em>en supposant H₀ vraie</em>. Cette distinction, pourtant fondamentale, est régulièrement manquée dans les rapports business <span class="cite">[Wasserstein & Lazar, 2016, ASA Statement on p-Values]</span>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Test</th><th>Hypothèse testée</th><th>Conditions</th><th>Application business</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>t de Student (1 éch.)</td><td>μ = μ₀</td><td>n ≥ 30 ou normalité</td><td>CA moyen ≠ benchmark sectoriel ?</td></tr>
+          <tr><td>t de Welch (2 éch.)</td><td>μ₁ = μ₂</td><td>Variances inégales</td><td>Panier moyen segment A vs B</td></tr>
+          <tr><td>ANOVA (F-test)</td><td>μ₁ = … = μₖ</td><td>Normalité + homoscédasticité</td><td>KPI moyen selon région commerciale</td></tr>
+          <tr><td>Chi² d'indépendance</td><td>Indépendance de X, Y</td><td>Effectifs > 5 par cellule</td><td>Canal de vente ⊥ segment client ?</td></tr>
+          <tr><td>Mann-Whitney U</td><td>Distribution identique</td><td>Non-paramétrique</td><td>NPS médian avant/après campagne</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>Erreur de type I vs type II :</strong> En mécanique de structure, vous choisissez un coefficient de sécurité. En statistique, vous choisissez \(\alpha\). Fixer \(\alpha = 5\%\) signifie accepter 5% de fausses alarmes. En business, la gravité relative des erreurs guide ce choix : si valider un médicament inefficace est catastrophique, on fixe \(\alpha = 1\%\) ; si rater une opportunité de marché est coûteux, on tolère \(\alpha = 10\%\).</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 5 — RÉGRESSION -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="regression">
+    <div class="module-number">Module 05</div>
+    <h2>Régression linéaire et modélisation</h2>
+    <p class="subtitle">Quantifier les relations causales et prévoir</p>
+
+    <h3>5.1 Régression linéaire simple</h3>
+
+    <div class="def">
+      <div class="def-label">Modèle de régression linéaire multiple (OLS)</div>
+      <p>\[ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_k X_k + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0, \sigma^2) \]</p>
+      <p>Les estimateurs OLS (Ordinary Least Squares) \( \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y} \) minimisent la somme des carrés des résidus. Ils sont BLUE (Best Linear Unbiased Estimators) sous les hypothèses de Gauss-Markov <span class="cite">[Hayashi, 2000]</span>.</p>
+    </div>
+
+    <p>En contexte business, la régression permet de répondre à des questions concrètes : <em>Quel est l'impact d'une hausse de 10% du budget publicitaire sur le CA, toutes choses égales par ailleurs ?</em> Ce "toutes choses égales par ailleurs" (<em>ceteris paribus</em>) est la valeur ajoutée de la régression multiple sur la simple corrélation.</p>
+
+    <h4>Métriques d'évaluation d'un modèle de régression</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Métrique</th><th>Formule</th><th>Interprétation</th><th>Valeur cible</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>R²</td><td>1 - SS_res/SS_tot</td><td>Part de variance expliquée</td><td>&gt; 0.7 en social science</td></tr>
+          <tr><td>R² ajusté</td><td>1 - (1-R²)(n-1)/(n-k-1)</td><td>Pénalise la complexité</td><td>Proche du R² brut</td></tr>
+          <tr><td>RMSE</td><td>√(MSE)</td><td>Erreur en unités originales</td><td>Minimal, contexte-dépendant</td></tr>
+          <tr><td>MAE</td><td>(1/n)Σ|yᵢ - ŷᵢ|</td><td>Robuste aux outliers</td><td>Minimal</td></tr>
+          <tr><td>F-statistic</td><td>MS_reg / MS_res</td><td>Significativité globale du modèle</td><td>p-value &lt; 0.05</td></tr>
+          <tr><td>VIF</td><td>1/(1-Rⱼ²)</td><td>Détecte la multicolinéarité</td><td>&lt; 10 (idéalement &lt; 5)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.2 Application : modèle de prédiction des ventes</h3>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Régression du CA trimestriel en fonction des dépenses publicitaires — panel 12 trimestres</div>
+      <div class="chart-src">Source : Simulation pédagogique basée sur les élasticités moyennes de Sethuraman et al. (2011), Journal of Marketing Research</div>
+      <canvas id="chartRegression"></canvas>
+    </div>
+
+    <p>Dans cet exemple, l'équation estimée donne : \( \hat{CA} = 1\,200 + 3.8 \times PubBudget \). L'interprétation de \( \hat{\beta}_1 = 3.8 \) : chaque euro additionnel de budget publicitaire génère en moyenne <strong>3,8 € de chiffre d'affaires supplémentaire</strong>, toutes choses égales par ailleurs. Cette elasticité publicité-ventes est cohérente avec la méta-analyse de <span class="cite">[Sethuraman et al., JMR 2011]</span> qui établit un ROI publicitaire moyen de 3,5–4,2× sur des panels de 900+ études.</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 6 — KPIs -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="kpis">
+    <div class="module-number">Module 06</div>
+    <h2>KPIs et pilotage data-driven</h2>
+    <p class="subtitle">La statistique au service de la décision opérationnelle</p>
+
+    <p>Un <strong>KPI</strong> (Key Performance Indicator) est une variable statistique dont le suivi régulier renseigne sur l'état d'un processus business par rapport à un objectif. Sa construction n'est pas triviale : un bon KPI doit être <em>actionnable</em>, <em>mesurable</em>, <em>comparable dans le temps</em>, et <em>non manipulable sans amélioration réelle</em>.</p>
+
+    <div class="def">
+      <div class="def-label">Définition — Framework OKR vs KPI</div>
+      <p>Les <strong>KPIs</strong> (Key Performance Indicators) mesurent la santé d'un processus existant (ex : taux de conversion, NPS, LTV). Les <strong>OKRs</strong> (Objectives & Key Results, popularisés par Intel puis Google) fixent des objectifs ambitieux et mesurent l'avancement. La distinction est fondamentale : les KPIs diagnostiquent, les OKRs orientent <span class="cite">[Doerr, 2018 — "Measure What Matters"]</span>.</p>
+    </div>
+
+    <h3>6.1 Taxonomie des métriques business</h3>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Dashboard type — Vue KPIs financiers et opérationnels (simulation e-commerce, 2023)</div>
+      <div class="chart-src">Source : Simulation pédagogique — structure inspirée des tableaux de bord Shopify Analytics & Contentsquare Benchmark 2023</div>
+      <canvas id="chartKPI"></canvas>
+    </div>
+
+    <h4>Les métriques "North Star"</h4>
+
+    <p>Amazon pilote sur le <em>Free Cash Flow per Share</em>. Netflix sur les <em>heures de visionnage</em> (et non les abonnés). Airbnb sur les <em>nuits réservées</em>. Le choix de la <strong>North Star Metric</strong> — la seule métrique dont l'optimisation aligne toute l'organisation — est une décision stratégique de premier ordre, pas un exercice purement statistique.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Métrique</th><th>Formule</th><th>Secteur typique</th><th>Benchmark 2023</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CAC — Customer Acquisition Cost</td><td>Coût marketing / Nouveaux clients</td><td>SaaS, e-commerce</td><td>SaaS B2B : ~300–800 €</td></tr>
+          <tr><td>LTV — Lifetime Value</td><td>ARPU × Gross Margin × (1/Churn)</td><td>Abonnement, banque</td><td>LTV/CAC ratio &gt; 3:1</td></tr>
+          <tr><td>Churn Rate</td><td>(Clients perdus / Clients début) × 100</td><td>SaaS, telecom</td><td>SaaS B2B : 5–7%/an acceptable</td></tr>
+          <tr><td>NPS — Net Promoter Score</td><td>% Promoteurs (9-10) − % Détracteurs (0-6)</td><td>Tous secteurs</td><td>Retail : +47, Tech : +61 (2023)</td></tr>
+          <tr><td>EBITDA Margin</td><td>EBITDA / CA × 100</td><td>Industriel, services</td><td>Manufacturing : 10–15%</td></tr>
+          <tr><td>Inventory Turnover</td><td>COGS / Stock moyen</td><td>Retail, distribution</td><td>Grocery : 8–12×/an</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>Loi de Goodhart :</strong> "Quand une mesure devient un objectif, elle cesse d'être une bonne mesure." En 1970, la British Rail a fixé un KPI sur la ponctualité. Résultat : les trains partaient… sans attendre les passagers retardataires. La statistique business doit intégrer cette limite comportementale fondamentale <span class="cite">[Goodhart, 1975]</span>.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 7 — A/B TESTING -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="abtest">
+    <div class="module-number">Module 07</div>
+    <h2>A/B Testing — L'expérimentation contrôlée</h2>
+    <p class="subtitle">Injecter de la causalité dans le pilotage business</p>
+
+    <p>L'A/B test est l'équivalent business de l'essai clinique randomisé : il permet d'isoler l'effet causal d'une intervention (un nouveau bouton, un prix, une mise en page) en comparant deux groupes traités différemment, toutes choses égales par ailleurs.</p>
+
+    <h3>7.1 Design d'un test valide</h3>
+
+    <div class="def">
+      <div class="def-label">Définition — Test randomisé contrôlé (RCT / A/B test)</div>
+      <p>Un RCT assigne aléatoirement les individus au groupe <strong>contrôle</strong> (A) ou au groupe <strong>traitement</strong> (B). La randomisation garantit que les groupes sont statistiquement équivalents sur toutes les variables observables <em>et inobservables</em>, permettant ainsi une inférence causale valide.</p>
+    </div>
+
+    <h4>Calcul de la taille d'échantillon requise</h4>
+
+    <div class="formula">
+      <div class="formula-label">Taille d'échantillon minimale par groupe</div>
+      n = 2 × (z_{α/2} + z_{β})² × σ² / δ²<br><br>
+      Où :<br>
+      α = risque de 1ère espèce (fausse alarme) — typiquement 0.05<br>
+      β = risque de 2ème espèce (faux négatif) — typiquement 0.20 → puissance = 80%<br>
+      σ² = variance estimée de la métrique<br>
+      δ = effet minimum détectable (MDE — Minimum Detectable Effect)<br><br>
+      Exemple : détecter une hausse de taux de clic de 3% → 5%, α=5%, puissance=80%<br>
+      → n ≈ 1 210 visiteurs par groupe
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Résultats d'un A/B test — Taux de conversion d'une landing page (n = 2 400 par groupe)</div>
+      <div class="chart-src">Source : Simulation pédagogique — valeurs typiques des benchmarks Optimizely & VWO (2023)</div>
+      <canvas id="chartAB"></canvas>
+    </div>
+
+    <p>Les plateformes tech leaders mènent des milliers de tests simultanément. Google lance environ <strong>10 000 tests A/B par an</strong> <span class="cite">[Google, "How Search Works", 2023]</span>. Booking.com a, à un moment, conduit jusqu'à <strong>1 000 tests simultanément</strong> sur ses interfaces, faisant de l'expérimentation contrôlée un avantage structurel de compétitivité <span class="cite">[Kohavi & Tang, 2020 — "Trustworthy Online Controlled Experiments"]</span>.</p>
+
+    <h3>7.2 Erreurs classiques en A/B testing</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Erreur</th><th>Description</th><th>Conséquence statistique</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Peek & stop</td><td>Arrêt dès que p &lt; 0.05, avant la fin prévue</td><td>Inflation du taux d'erreur de type I (jusqu'à 40%)</td></tr>
+          <tr><td>Multiple testing</td><td>Tester 20 métriques simultanément</td><td>1 faux positif attendu par hasard — correction Bonferroni nécessaire</td></tr>
+          <tr><td>SUTVA violation</td><td>Spillover entre groupes A et B</td><td>Biais de l'estimateur causal (ex : réseaux sociaux)</td></tr>
+          <tr><td>Novelty effect</td><td>Engagement initial artificiel de la variante B</td><td>Surestimation de l'effet à long terme</td></tr>
+          <tr><td>SRM — Sample Ratio Mismatch</td><td>Ratio A/B ≠ ratio cible (1:1)</td><td>Biais de sélection — invalide le test</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 8 — FORECASTING -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="forecasting">
+    <div class="module-number">Module 08</div>
+    <h2>Forecasting & Prévision</h2>
+    <p class="subtitle">Anticiper la demande, les revenus, les risques</p>
+
+    <p>La prévision est l'une des applications les plus directement opérationnelles de la statistique en entreprise : planification de la production, budgétisation, gestion des stocks, allocation des ressources humaines. Une erreur de prévision de 10% sur les ventes se traduit directement en coûts de sur-stockage ou en ruptures, pouvant représenter <strong>20 à 30% du résultat opérationnel</strong> dans le secteur retail <span class="cite">[Chopra & Meindl, 2016 — Supply Chain Management]</span>.</p>
+
+    <h3>8.1 Décomposition d'une série temporelle</h3>
+
+    <div class="def">
+      <div class="def-label">Modèle additif STL (Seasonal and Trend decomposition using Loess)</div>
+      <p>\[ Y_t = T_t + S_t + R_t \]</p>
+      <p>où \(T_t\) est la tendance, \(S_t\) la composante saisonnière, et \(R_t\) le résidu. Ce modèle, proposé par Cleveland et al. (1990), est robuste aux observations aberrantes et gère les saisonnalités variables dans le temps — une limite des méthodes classiques de décomposition <span class="cite">[Cleveland et al., 1990, Journal of Official Statistics]</span>.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Prévision du CA mensuel — Comparaison ARIMA vs Lissage exponentiel (Holt-Winters) — 24 mois ahead</div>
+      <div class="chart-src">Source : Simulation pédagogique — structure de série temporelle conforme aux patterns sectoriels M5 Competition (Makridakis et al., 2022)</div>
+      <canvas id="chartForecast"></canvas>
+    </div>
+
+    <h3>8.2 Panorama des méthodes de prévision</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Méthode</th><th>Principe</th><th>Horizon typique</th><th>Forces</th><th>Limites</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Naïve / Saisonnière naïve</td><td>Dernier point ou même période N-1</td><td>Très court terme</td><td>Baseline rapide</td><td>Aucune tendance capturée</td></tr>
+          <tr><td>Lissage exponentiel (ETS)</td><td>Pondération décroissante du passé</td><td>Court-moyen terme</td><td>Simple, interprétable</td><td>Hypothèse de linéarité</td></tr>
+          <tr><td>ARIMA</td><td>Modélisation des autocorrélations</td><td>Court terme</td><td>Théoriquement fondé</td><td>Stationnarité requise, complexe à calibrer</td></tr>
+          <tr><td>Prophet (Meta, 2017)</td><td>Modèle additif avec effets de calendrier</td><td>Moyen terme</td><td>Gère les anomalies et jours fériés</td><td>Boîte noire partielle</td></tr>
+          <tr><td>XGBoost / LightGBM</td><td>Gradient boosting avec features lag</td><td>Court-moyen terme</td><td>Haute précision, multivarié</td><td>Interprétabilité, overfitting</td></tr>
+          <tr><td>LSTM (Deep Learning)</td><td>Réseaux récurrents séquentiels</td><td>Long terme, multivarié</td><td>Capture de dépendances longues</td><td>Data hungry, lent</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>Benchmark empirique M5 :</strong> La compétition M5 (Makridakis et al., 2022) a testé 50+ méthodes sur 42 000 séries Walmart. Résultat contre-intuitif : un <strong>ensemble de méthodes simples</strong> (ETS + ARIMA) surpasse souvent les modèles deep learning sur des horizons de prévision inférieurs à 28 jours — et ce avec 10× moins de données d'entraînement nécessaires. La complexité n'est pas toujours synonyme de précision <span class="cite">[Makridakis et al., IJF 2022]</span>.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 9 — PERFORMANCE & TAILLE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="taille">
+    <div class="module-number">Module 09</div>
+    <h2>Performance d'entreprise en fonction de la taille</h2>
+    <p class="subtitle">Économies d'échelle, complexité organisationnelle et maturité analytique</p>
+
+    <p>La relation entre la taille d'une entreprise et sa performance est l'une des questions les plus étudiées en économie industrielle. Elle présente une non-linéarité fondamentale : les économies d'échelle initiales sont contrebalancées, au-delà d'un seuil, par les <strong>déséconomies d'échelle</strong> — coûts de coordination, bureaucratie, perte d'agilité.</p>
+
+    <h3>9.1 Définitions réglementaires — Taille d'entreprise en Union Européenne</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Catégorie</th><th>Effectif</th><th>CA annuel</th><th>Total bilan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Microentreprise</td><td>&lt; 10</td><td>≤ 2 M€</td><td>≤ 2 M€</td></tr>
+          <tr><td>PME — Petite</td><td>10 – 49</td><td>≤ 10 M€</td><td>≤ 10 M€</td></tr>
+          <tr><td>PME — Moyenne</td><td>50 – 249</td><td>≤ 50 M€</td><td>≤ 43 M€</td></tr>
+          <tr><td>ETI (Entreprise de Taille Intermédiaire)</td><td>250 – 4 999</td><td>50–1 500 M€</td><td>—</td></tr>
+          <tr><td>Grande entreprise</td><td>≥ 5 000</td><td>&gt; 1 500 M€</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.78rem; color: var(--muted); font-family: var(--mono);">Source : Recommandation 2003/361/CE de la Commission européenne, critères cumulatifs (effectif ET l'un des deux critères financiers)</p>
+
+    <h3>9.2 Les PME dans l'économie française — Chiffres clés</h3>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="big">99,9%</div>
+        <div class="label">Des entreprises françaises sont des PME ou microentreprises</div>
+        <div class="source">INSEE, Bilan économique 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">48%</div>
+        <div class="label">De l'emploi privé français assuré par les PME-ETI</div>
+        <div class="source">BPI France, 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">36%</div>
+        <div class="label">Du chiffre d'affaires total des entreprises françaises généré par les PME</div>
+        <div class="source">INSEE, Statistiques structurelles 2022</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">2,8%</div>
+        <div class="label">Seulement de PME atteignent le stade ETI après 10 ans — "missing middle"</div>
+        <div class="source">Rapport Gallois, 2012 — confirmé INSEE 2021</div>
+      </div>
+    </div>
+
+    <h3>9.3 Courbe en U — Rentabilité et taille</h3>
+
+    <p>La relation rentabilité-taille n'est pas monotone. La littérature économétrique identifie consistamment une <strong>courbe en U</strong> : les microentreprises et grandes entreprises affichent des marges supérieures à la classe intermédiaire (PME 50-249 salariés), qui subit un double handicap — coûts fixes élevés sans les économies d'échelle des grandes entreprises.</p>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Marge d'exploitation médiane (%) par classe de taille — Secteur industriel et services, France 2022</div>
+      <div class="chart-src">Source : Banque de France, "Bilan des entreprises 2022" — Centrale de bilans ; OCDE, "Business Insights on Emerging Markets" 2023</div>
+      <canvas id="chartSize"></canvas>
+    </div>
+
+    <h3>9.4 Économies d'échelle — Approche quantitative</h3>
+
+    <div class="def">
+      <div class="def-label">Définition — Économies d'échelle et élasticité-coût</div>
+      <p>Une firme présente des économies d'échelle si le doublement de la production entraîne une augmentation du coût total <em>inférieure</em> à 100%. Formellement, avec la fonction de coût \(C(Q)\) :</p>
+      <p>\[ \varepsilon_{C,Q} = \frac{\partial C / C}{\partial Q / Q} = \frac{Q}{C} \cdot C'(Q) \]</p>
+      <p>Si \(\varepsilon_{C,Q} &lt; 1\) : économies d'échelle. Si \(\varepsilon_{C,Q} = 1\) : rendements constants. Si \(\varepsilon_{C,Q} &gt; 1\) : déséconomies d'échelle.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Coût unitaire moyen en fonction du volume produit — Illustration des économies et déséconomies d'échelle (secteur manufacturier)</div>
+      <div class="chart-src">Source : Illustration pédagogique — valeurs cohérentes avec Cabral & Mata (2003), AER, et données INSEE secteur automobile</div>
+      <canvas id="chartScale"></canvas>
+    </div>
+
+    <p>L'optimum technologique (minimum du coût moyen) se situe à un niveau de production dépendant fortement du secteur. Dans l'industrie automobile, les économies d'échelle sont significatives jusqu'à environ <strong>200 000 véhicules/an par modèle</strong> (Christofides et al., 2003). Dans le conseil, elles sont quasi inexistantes au-delà de 50 consultants par practice (économies de réputation uniquement).</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- MODULE 10 — MATURITÉ DATA -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="module" id="maturite">
+    <div class="module-number">Module 10</div>
+    <h2>Maturité data des organisations</h2>
+    <p class="subtitle">De la donnée brute à l'avantage compétitif</p>
+
+    <p>La maturité analytique d'une organisation — c'est-à-dire sa capacité à collecter, traiter, analyser et agir sur la donnée — est fortement corrélée à sa taille, mais cette relation n'est pas déterministe : des ETI peuvent être plus avancées que des grandes entreprises héritières de systèmes legacy.</p>
+
+    <h3>10.1 Le modèle DELTA — Data-Driven Organization</h3>
+
+    <div class="def">
+      <div class="def-label">Modèle DELTA (Davenport & Harris, 2007 — MIT Sloan)</div>
+      <p>Le modèle DELTA identifie 5 dimensions de la maturité analytique :<br>
+      <strong>D</strong>ata — qualité, gouvernance, accessibilité<br>
+      <strong>E</strong>nterprise — cohérence organisationnelle (vs silos)<br>
+      <strong>L</strong>eadership — engagement du top management sur la data<br>
+      <strong>T</strong>argets — focus sur les cas d'usage à haute valeur<br>
+      <strong>A</strong>nalysts — compétences des équipes</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Indice de maturité analytique moyen par taille d'entreprise (score /100) — Enquête mondiale 2 500 entreprises</div>
+      <div class="chart-src">Source : NewVantage Partners, "Data & AI Leadership Executive Survey 2023" ; Gartner, "Data & Analytics Maturity Model" 2022</div>
+      <canvas id="chartMaturite"></canvas>
+    </div>
+
+    <h3>10.2 Niveaux de sophistication analytique</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Niveau</th><th>Nom</th><th>Description</th><th>Question traitée</th><th>Valeur business</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Descriptive</td><td>Reporting, tableaux de bord, agrégations</td><td>Que s'est-il passé ?</td><td>Faible → Modérée</td></tr>
+          <tr><td>2</td><td>Diagnostique</td><td>Drill-down, analyse des causes racines</td><td>Pourquoi est-ce arrivé ?</td><td>Modérée</td></tr>
+          <tr><td>3</td><td>Prédictive</td><td>Modélisation statistique, ML, scoring</td><td>Que va-t-il se passer ?</td><td>Élevée</td></tr>
+          <tr><td>4</td><td>Prescriptive</td><td>Optimisation, simulation, recommandation</td><td>Que faut-il faire ?</td><td>Très élevée</td></tr>
+          <tr><td>5</td><td>Autonome</td><td>Décision automatisée, IA en production</td><td>L'action est exécutée automatiquement</td><td>Maximale</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Répartition des entreprises par niveau de maturité analytique, par taille — Europe 2023</div>
+      <div class="chart-src">Source : Capgemini Research Institute, "Data-Powered Enterprise Survey", 2023 — n = 1 200 entreprises européennes</div>
+      <canvas id="chartMatLevel"></canvas>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="big">74%</div>
+        <div class="label">Des grandes entreprises ont un CDO (Chief Data Officer) en poste en 2023</div>
+        <div class="source">Gartner CDO Survey 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">12%</div>
+        <div class="label">Seulement des PME ont formalisé une stratégie data</div>
+        <div class="source">Capgemini, 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="big">+8,1%</div>
+        <div class="label">De productivité pour les entreprises passant du niveau 1 au niveau 3</div>
+        <div class="source">OCDE, 2022 — Panel 3 000 firmes</td></tr></div>
+        <div class="source">OCDE Digital Economy Outlook 2022</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Conclusion synthétique :</strong> La taille crée un accès facilitateur à la donnée (volumes, budgets, équipes), mais n'est pas suffisante. La véritable barrière à la maturité analytique est organisationnelle et culturelle — pas technologique. Une PME de 80 personnes avec une culture data forte surpassera analytiquement un grand groupe fragmenté en silos. L'enjeu pour un futur manager de l'EM Lyon est précisément de construire cette culture, indépendamment de la taille de l'organisation.</p>
+    </div>
+  </div>
+
+  <!-- RÉFÉRENCES -->
+  <div class="references" id="references">
+    <h2>Références bibliographiques</h2>
+    <ol>
+      <li><strong>McKinsey Global Institute</strong> (2022). <em>The Data-Driven Enterprise of 2025</em>. McKinsey & Company.</li>
+      <li><strong>NewVantage Partners</strong> (2023). <em>Data & AI Leadership Executive Survey 2023</em>. NewVantage Partners LLC.</li>
+      <li><strong>Wasserstein, R.L. & Lazar, N.A.</strong> (2016). The ASA Statement on p-Values: Context, Process, and Purpose. <em>The American Statistician</em>, 70(2), 129–133.</li>
+      <li><strong>Pearl, J. & Mackenzie, D.</strong> (2018). <em>The Book of Why: The New Science of Cause and Effect</em>. Basic Books.</li>
+      <li><strong>Hayashi, F.</strong> (2000). <em>Econometrics</em>. Princeton University Press.</li>
+      <li><strong>Sethuraman, R., Tellis, G.J. & Briesch, R.A.</strong> (2011). How Well Does Advertising Work? Generalizations from Meta-Analysis of Brand Advertising Elasticities. <em>Journal of Marketing Research</em>, 48(3), 457–471.</li>
+      <li><strong>Kohavi, R. & Tang, D.</strong> (2020). <em>Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing</em>. Cambridge University Press.</li>
+      <li><strong>Makridakis, S., Spiliotis, E. & Assimakopoulos, V.</strong> (2022). M5 accuracy competition: Results, findings, and conclusions. <em>International Journal of Forecasting</em>, 38(4), 1346–1364.</li>
+      <li><strong>Cleveland, R.B., Cleveland, W.S., McRae, J.E. & Terpenning, I.</strong> (1990). STL: A Seasonal-Trend Decomposition Procedure Based on Loess. <em>Journal of Official Statistics</em>, 6(1), 3–73.</li>
+      <li><strong>Chopra, S. & Meindl, P.</strong> (2016). <em>Supply Chain Management: Strategy, Planning, and Operation</em> (6th ed.). Pearson.</li>
+      <li><strong>Davenport, T.H. & Harris, J.G.</strong> (2007). <em>Competing on Analytics: The New Science of Winning</em>. Harvard Business School Press.</li>
+      <li><strong>Doerr, J.</strong> (2018). <em>Measure What Matters: OKRs — The Simple Idea That Drives 10x Growth</em>. Portfolio/Penguin.</li>
+      <li><strong>Goodhart, C.</strong> (1975). Monetary relationships: A view from Threadneedle Street. Papers in Monetary Economics. Reserve Bank of Australia.</li>
+      <li><strong>Luenberger, D.G.</strong> (1998). <em>Investment Science</em>. Oxford University Press.</li>
+      <li><strong>INSEE</strong> (2023). <em>Bilan économique 2023 — Caractéristiques des entreprises</em>. Institut National de la Statistique et des Études Économiques.</li>
+      <li><strong>Banque de France</strong> (2022). <em>Bilan des entreprises — Centrale de bilans 2022</em>. Banque de France.</li>
+      <li><strong>Capgemini Research Institute</strong> (2023). <em>Data-Powered Enterprise Survey 2023</em>. Capgemini SE.</li>
+      <li><strong>OCDE</strong> (2022). <em>Digital Economy Outlook 2022</em>. Organisation for Economic Co-operation and Development.</li>
+      <li><strong>Commission européenne</strong> (2003). Recommandation 2003/361/CE relative à la définition des micro, petites et moyennes entreprises. <em>Journal officiel de l'Union européenne</em>, L 124, 36–41.</li>
+    </ol>
+  </div>
+
+</div><!-- /content-wrapper -->
+</main>
+
+<script>
+// ── PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const max = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('progressBar').style.transform = `scaleX(${scrolled / max})`;
+});
+
+// ── CHART.JS DEFAULTS ──
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#6b6457';
+
+const INK = '#0d0d0d';
+const RED = '#c0392b';
+const BLUE = '#1a3a5c';
+const GOLD = '#d4a017';
+const MUTED = '#6b6457';
+const CREAM = '#ede8da';
+const LGRAY = '#ddd5c5';
+
+// ── 1. CHART MATURITÉ VS PERFORMANCE ──
+new Chart(document.getElementById('chartMaturity'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 (Faible\nmaturité)', 'Q2', 'Q3\n(Médiane)', 'Q4', 'Q5 (Haute\nmaturité)'],
+    datasets: [{
+      label: 'Δ EBITDA vs médiane sectorielle (%)',
+      data: [-4.2, -1.8, 0, 3.1, 7.8],
+      backgroundColor: [RED + '55', RED + '33', LGRAY, BLUE + '55', BLUE + 'cc'],
+      borderColor: [RED, RED, LGRAY, BLUE, BLUE],
+      borderWidth: 2,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y > 0 ? '+' : ''}${ctx.parsed.y}%` } } },
+    scales: {
+      y: { grid: { color: LGRAY }, ticks: { callback: v => `${v > 0 ? '+' : ''}${v}%` } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 2. DISTRIBUTION MARGES ──
+function gaussianKDE(values, min, max, points = 80) {
+  const bw = 1.06 * Math.sqrt(values.reduce((s, x) => s + x*x, 0)/values.length - Math.pow(values.reduce((s,x)=>s+x,0)/values.length,2)) * Math.pow(values.length, -0.2);
+  const xs = Array.from({length: points}, (_, i) => min + (max - min) * i / (points - 1));
+  const ys = xs.map(x => values.reduce((s, xi) => s + Math.exp(-0.5*((x-xi)/bw)**2) / (bw * Math.sqrt(2*Math.PI)), 0) / values.length);
+  return { xs, ys };
+}
+
+const margins = [];
+const rand = (mu, sigma) => mu + sigma * Math.sqrt(-2*Math.log(Math.random())) * Math.cos(2*Math.PI*Math.random());
+for (let i = 0; i < 500; i++) { margins.push(Math.max(-20, Math.min(55, rand(18, 10) + (Math.random() < 0.15 ? rand(15, 5) : 0))); }
+const kde = gaussianKDE(margins, -20, 55, 80);
+
+new Chart(document.getElementById('chartDistrib'), {
+  type: 'line',
+  data: {
+    labels: kde.xs.map(x => x.toFixed(1)),
+    datasets: [{
+      label: 'Densité estimée',
+      data: kde.ys,
+      fill: true,
+      backgroundColor: BLUE + '22',
+      borderColor: BLUE,
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` densité : ${ctx.parsed.y.toFixed(4)}`, title: ctx => `Marge : ${ctx[0].label}%` }
+    }},
+    scales: {
+      x: { title: { display: true, text: 'Marge brute (%)' }, grid: { color: LGRAY }, ticks: { maxTicksLimit: 10 } },
+      y: { title: { display: true, text: 'Densité' }, grid: { color: LGRAY } }
+    }
+  }
+});
+
+// ── 3. SCATTER NPS vs CROISSANCE ──
+const scatterData = [];
+for (let i = 0; i < 80; i++) {
+  const nps = Math.round(rand(45, 20));
+  const growth = Math.max(-20, Math.min(80, nps * 0.35 + rand(0, 12)));
+  scatterData.push({ x: Math.max(-20, Math.min(80, nps)), y: growth });
+}
+new Chart(document.getElementById('chartScatter'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Entreprise SaaS B2B',
+      data: scatterData,
+      backgroundColor: BLUE + '60',
+      borderColor: BLUE,
+      borderWidth: 1,
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` NPS : ${ctx.parsed.x}, Croissance CA : +${ctx.parsed.y.toFixed(1)}%` } } },
+    scales: {
+      x: { title: { display: true, text: 'Net Promoter Score' }, grid: { color: LGRAY } },
+      y: { title: { display: true, text: 'Croissance CA annuelle (%)' }, grid: { color: LGRAY } }
+    }
+  }
+});
+
+// ── 4. RÉGRESSION ──
+const pubBudgets = [120, 150, 180, 200, 240, 260, 300, 320, 370, 400, 450, 480];
+const caData = pubBudgets.map(x => 1200 + 3.8 * x + rand(0, 80));
+const lineData = [{ x: 100, y: 1200 + 3.8 * 100 }, { x: 500, y: 1200 + 3.8 * 500 }];
+new Chart(document.getElementById('chartRegression'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Observations',
+      data: pubBudgets.map((x, i) => ({ x, y: caData[i] })),
+      backgroundColor: BLUE + '70',
+      pointRadius: 7,
+    }, {
+      label: 'Droite OLS : ŷ = 1 200 + 3.8x',
+      data: lineData,
+      type: 'line',
+      borderColor: RED,
+      borderWidth: 2.5,
+      pointRadius: 0,
+      fill: false,
+      tension: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true, labels: { boxWidth: 14 } } },
+    scales: {
+      x: { title: { display: true, text: 'Budget publicitaire (k€)' }, grid: { color: LGRAY } },
+      y: { title: { display: true, text: 'CA trimestriel (k€)' }, grid: { color: LGRAY } }
+    }
+  }
+});
+
+// ── 5. KPI RADAR ──
+new Chart(document.getElementById('chartKPI'), {
+  type: 'bar',
+  data: {
+    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+    datasets: [{
+      label: 'CA mensuel (M€)',
+      data: [2.1, 1.9, 2.4, 2.6, 2.8, 3.1, 2.7, 2.3, 3.0, 3.4, 3.9, 4.8],
+      backgroundColor: BLUE + '80',
+      borderColor: BLUE,
+      borderWidth: 1.5,
+      borderRadius: 3,
+      yAxisID: 'y',
+    }, {
+      label: 'Taux de conversion (%)',
+      data: [3.1, 2.9, 3.4, 3.6, 3.8, 4.1, 3.7, 3.2, 4.0, 4.3, 4.6, 5.2],
+      type: 'line',
+      borderColor: RED,
+      backgroundColor: RED + '15',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 4,
+      yAxisID: 'y2',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true } },
+    scales: {
+      y: { title: { display: true, text: 'CA (M€)' }, grid: { color: LGRAY }, position: 'left' },
+      y2: { title: { display: true, text: 'Conv. (%)' }, position: 'right', grid: { display: false } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 6. A/B TEST ──
+new Chart(document.getElementById('chartAB'), {
+  type: 'bar',
+  data: {
+    labels: ['Variante A\n(Contrôle)', 'Variante B\n(Traitement)'],
+    datasets: [{
+      label: 'Taux de conversion (%)',
+      data: [3.2, 4.1],
+      backgroundColor: [MUTED + '80', BLUE + 'cc'],
+      borderColor: [MUTED, BLUE],
+      borderWidth: 2,
+      borderRadius: 6,
+      error: [0.31, 0.35],
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: {
+      label: ctx => ` Taux de conversion : ${ctx.parsed.x}%`
+    }},
+    annotation: { annotations: {} }
+    },
+    scales: {
+      x: { min: 0, max: 6, title: { display: true, text: 'Taux de conversion (%)' }, grid: { color: LGRAY } },
+      y: { grid: { display: false } }
+    }
+  },
+  plugins: [{
+    id: 'errorBars',
+    afterDraw(chart) {
+      const ctx2 = chart.ctx;
+      const meta = chart.getDatasetMeta(0);
+      const errors = [0.31, 0.35];
+      ctx2.save();
+      ctx2.strokeStyle = '#0d0d0d'; ctx2.lineWidth = 2.5;
+      meta.data.forEach((bar, i) => {
+        const x = bar.x; const y = bar.y;
+        const eScaled = chart.scales.x.getPixelForValue(chart.data.datasets[0].data[i] + errors[i]) - chart.scales.x.getPixelForValue(chart.data.datasets[0].data[i]);
+        ctx2.beginPath(); ctx2.moveTo(x - eScaled, y - 8); ctx2.lineTo(x - eScaled, y + 8); ctx2.moveTo(x + eScaled, y - 8); ctx2.lineTo(x + eScaled, y + 8); ctx2.moveTo(x - eScaled, y); ctx2.lineTo(x + eScaled, y); ctx2.stroke();
+      });
+      ctx2.restore();
+      // annotation
+      ctx2.save(); ctx2.fillStyle = RED; ctx2.font = 'bold 12px DM Sans'; ctx2.textAlign = 'center';
+      ctx2.fillText('p-value = 0.003 < 0.05 ✓', chart.chartArea.right - 80, chart.chartArea.top + 24);
+      ctx2.fillText('Δ = +28% (lift)', chart.chartArea.right - 80, chart.chartArea.top + 44);
+      ctx2.restore();
+    }
+  }]
+});
+
+// ── 7. FORECAST ──
+const histLabels = ['Jan-22','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc-22','Jan-23','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc-23'];
+const histData = [82,78,91,95,103,108,112,98,115,122,138,160,90,85,99,105,114,120,125,109,128,136,155,178];
+const forecastLabels = ['Jan-24','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc-24'];
+const forecastARIMA = [95,92,108,114,123,130,135,118,139,148,168,196];
+const forecastHW = [97,93,110,116,126,133,138,121,142,151,171,200];
+const ciUp = forecastARIMA.map((v, i) => v + 8 + i * 2.5);
+const ciLow = forecastARIMA.map((v, i) => v - 8 - i * 2.5);
+
+new Chart(document.getElementById('chartForecast'), {
+  type: 'line',
+  data: {
+    labels: [...histLabels, ...forecastLabels],
+    datasets: [
+      { label: 'Historique', data: [...histData, ...new Array(12).fill(null)], borderColor: INK, borderWidth: 2, pointRadius: 2, tension: 0.3, fill: false },
+      { label: 'ARIMA (prévision)', data: [...new Array(24).fill(null), ...forecastARIMA], borderColor: BLUE, borderWidth: 2.5, pointRadius: 3, tension: 0.3, fill: false, borderDash: [6,3] },
+      { label: 'Holt-Winters (prévision)', data: [...new Array(24).fill(null), ...forecastHW], borderColor: RED, borderWidth: 2, pointRadius: 3, tension: 0.3, fill: false, borderDash: [3,3] },
+      { label: 'IC 90% ARIMA', data: [...new Array(24).fill(null), ...ciUp], borderColor: 'transparent', backgroundColor: BLUE + '18', fill: '+1', pointRadius: 0, tension: 0.3 },
+      { label: '', data: [...new Array(24).fill(null), ...ciLow], borderColor: 'transparent', backgroundColor: BLUE + '18', fill: false, pointRadius: 0, tension: 0.3 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true, labels: { filter: (item) => item.text !== '' } } },
+    scales: {
+      y: { title: { display: true, text: 'CA mensuel (M€)' }, grid: { color: LGRAY } },
+      x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } }
+    }
+  }
+});
+
+// ── 8. PERFORMANCE PAR TAILLE ──
+new Chart(document.getElementById('chartSize'), {
+  type: 'bar',
+  data: {
+    labels: ['Microentreprise\n(<10)', 'Petite\n(10-49)', 'Moyenne\n(50-249)', 'ETI\n(250-4 999)', 'Grande\n(≥ 5 000)'],
+    datasets: [
+      {
+        label: 'Industrie',
+        data: [8.2, 6.1, 5.4, 7.8, 9.3],
+        backgroundColor: BLUE + '90',
+        borderRadius: 3,
+      },
+      {
+        label: 'Services',
+        data: [14.1, 9.8, 8.2, 11.4, 15.2],
+        backgroundColor: RED + '90',
+        borderRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true }, tooltip: { callbacks: { label: ctx => ` Marge d'exploitation : ${ctx.parsed.y}%` } } },
+    scales: {
+      y: { title: { display: true, text: "Marge d'exploitation médiane (%)" }, grid: { color: LGRAY } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── 9. ÉCONOMIES D'ÉCHELLE ──
+const volumes = Array.from({length:100}, (_, i) => (i+1) * 500);
+const costCurve = volumes.map(q => {
+  const fixedCostPerUnit = 150000 / q;
+  const variableCost = 35 + 80 * Math.exp(-q / 15000);
+  return fixedCostPerUnit + variableCost;
+});
+const minCost = Math.min(...costCurve);
+const minVol = volumes[costCurve.indexOf(minCost)];
+
+new Chart(document.getElementById('chartScale'), {
+  type: 'line',
+  data: {
+    labels: volumes.map(v => v >= 1000 ? `${v/1000}k` : v),
+    datasets: [{
+      label: 'Coût moyen unitaire (€)',
+      data: costCurve,
+      borderColor: BLUE,
+      borderWidth: 2.5,
+      fill: true,
+      backgroundColor: BLUE + '12',
+      pointRadius: 0,
+      tension: 0.4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` Coût unitaire : ${ctx.parsed.y.toFixed(1)} €` } },
+      annotation: { annotations: {} }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Volume produit (unités/an)' }, ticks: { maxTicksLimit: 10 }, grid: { color: LGRAY } },
+      y: { title: { display: true, text: 'Coût moyen (€/unité)' }, grid: { color: LGRAY } }
+    }
+  },
+  plugins: [{
+    id: 'optimumLine',
+    afterDraw(chart) {
+      const ctx2 = chart.ctx;
+      const xScale = chart.scales.x;
+      const yScale = chart.scales.y;
+      const minIdx = costCurve.indexOf(minCost);
+      const xPx = xScale.getPixelForValue(minIdx);
+      const yPx = yScale.getPixelForValue(minCost);
+      ctx2.save();
+      ctx2.strokeStyle = RED; ctx2.lineWidth = 1.5; ctx2.setLineDash([4,4]);
+      ctx2.beginPath(); ctx2.moveTo(xPx, yPx); ctx2.lineTo(xPx, yScale.bottom); ctx2.stroke();
+      ctx2.fillStyle = RED; ctx2.font = 'bold 11px DM Sans'; ctx2.textAlign = 'center';
+      ctx2.fillText(`Optimum ≈ ${(minVol/1000).toFixed(0)}k u.`, xPx, yPx - 10);
+      ctx2.restore();
+    }
+  }]
+});
+
+// ── 10. MATURITÉ PAR TAILLE ──
+new Chart(document.getElementById('chartMaturite'), {
+  type: 'radar',
+  data: {
+    labels: ['Donnée\n(qualité)', 'Enterprise\n(silos)', 'Leadership\n(data)', 'Cibles\n(usages)', 'Analystes\n(compétences)'],
+    datasets: [
+      { label: 'PME < 50', data: [28, 22, 31, 35, 29], borderColor: MUTED, backgroundColor: MUTED + '20', pointBackgroundColor: MUTED },
+      { label: 'ETI 50-4999', data: [52, 45, 58, 62, 55], borderColor: GOLD, backgroundColor: GOLD + '25', pointBackgroundColor: GOLD },
+      { label: 'Grande ≥ 5000', data: [71, 60, 74, 78, 72], borderColor: BLUE, backgroundColor: BLUE + '20', pointBackgroundColor: BLUE },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true } },
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { stepSize: 20, backdropColor: 'transparent', font: { size: 9 } },
+        grid: { color: LGRAY },
+        pointLabels: { font: { size: 10 } }
+      }
+    }
+  }
+});
+
+// ── 11. NIVEAUX DE MATURITÉ PAR TAILLE ──
+new Chart(document.getElementById('chartMatLevel'), {
+  type: 'bar',
+  data: {
+    labels: ['PME\n< 50 sal.', 'ETI\n50–4 999 sal.', 'Grande\n≥ 5 000 sal.'],
+    datasets: [
+      { label: 'Niveau 1 — Descriptive', data: [61, 30, 12], backgroundColor: '#ddd5c5', },
+      { label: 'Niveau 2 — Diagnostique', data: [24, 35, 22], backgroundColor: MUTED + 'aa', },
+      { label: 'Niveau 3 — Prédictive', data: [11, 24, 38], backgroundColor: BLUE + 'aa', },
+      { label: 'Niveaux 4–5 — Prescriptive / Autonome', data: [4, 11, 28], backgroundColor: RED + 'cc', },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: true, position: 'bottom' }, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label} : ${ctx.parsed.y}%` } } },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, title: { display: true, text: '% d'entreprises' }, ticks: { callback: v => `${v}%` }, grid: { color: LGRAY }, max: 100 }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
